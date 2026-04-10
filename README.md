@@ -46,7 +46,7 @@ src
 - subscriber.py<br>
 - loggier_mariadb.py<br>
 <br>
-db
+db<br>
 - schema.sql<br>
 - queries.sql<br>
 <br>
