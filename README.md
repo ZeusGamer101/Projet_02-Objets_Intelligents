@@ -10,7 +10,7 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 - Celullaire avec MQTT Dash ou une autre application d'objets intelligents <br>
 - Écouteurs USB avec microphone <br>
 
-## 3. Dépendances:
+## 3. Dépendances
 - paho-mqtt <br>
 - gpiozero <br>
 - PyMySQL <br>
