@@ -17,7 +17,7 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 - nltk
 - speech_recognition
 
-## 4. Procédure d'installatiom
+## 4. Procédure d'installation
 **Étape 1:** Installer Mosquitto (broker) et les clients avec la ligne de commande sudo apt install -y mosquitto mosquitto-clients
 **Étape 2:** Démarrer le service avec la ligne de commande sudo systemctl enable --now mosquitto
 **Étape 3:** Vérifier que le servoce tourne avec la ligne de commande systemctl status mosquitto --no-pager
