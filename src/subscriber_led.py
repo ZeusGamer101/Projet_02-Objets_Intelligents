@@ -105,8 +105,13 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
     
     if command == "on":
         led.on()
-    else:
+    elif command == "off":
         led.off()
+    elif command == "blink":
+        led.blink()
+    elif command == "mode nuit":
+        led.blink(0.5, 2)
+
     publish_led_state(client)
 
 def on_disconnect(client, userdata, reason_code, properties=None):
