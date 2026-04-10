@@ -45,6 +45,7 @@ src
 - publisher.py
 - subscriber.py
 - logger_mariadb.py <br>
+<br>
 db
 - queries.sql
 - schema.sql
