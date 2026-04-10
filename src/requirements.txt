@@ -1,0 +1,5 @@
+gpiozero == 2.0.1.
+nltk == 3.9.4.
+paho-mqtt == 2.1.0.
+PyAudio == 0.2.14.
+SpeechRecognition == 3.16.0
