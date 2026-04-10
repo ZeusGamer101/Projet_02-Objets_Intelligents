@@ -30,7 +30,7 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 ## 5. Procédures de lancement
 **Étape 1**: Lancer le subscriber <br>
 **Étape 2**: Lancer le publisher <br>
-**Étape 3** Lancer le logger <br>
+**Étape 3**: Lancer le logger <br>
 
 ## 6. Commandes supportées
 Voici des exemples dec ommandes supportées et les actions qu'elles produistent sur le système: <br>
