@@ -44,7 +44,7 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 src
 - publisher.py
 - subscriber.py
-- logger_mariadb.py
+- logger_mariadb.py <br>
 db
 - queries.sql
 - schema.sql
