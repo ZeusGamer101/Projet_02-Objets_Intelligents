@@ -28,25 +28,28 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 **Étape 8**: Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
 
 ## 5. Procédures de lancement
+**Étape 1**: Lancer le subscriber
+**Étape 2**: Lancer le publisher
+**Étape 3** Lancer le logger 
 
 ## 6. Commandes supportées
 Voici des exemples dec ommandes supportées et les actions qu'elles produistent sur le système: <br>
-- **allume la lampe**: la DEL s'allume
-- **éteint la lampe**: la DEL s'éteint
-- **fais clignoter la lampe**: la DEL clignote
-- **donne-moi l'état**: le système vocal dit quel est l'état actuel de la lampe
-- **active le mode nuit**: la DEL clignote lentement
+- **allume la lampe**: la DEL s'allume <br>
+- **éteint la lampe**: la DEL s'éteint <br>
+- **fais clignoter la lampe**: la DEL clignote <br>
+- **donne-moi l'état**: le système vocal dit quel est l'état actuel de la lampe <br>
+- **active le mode nuit**: la DEL clignote lentement <br>
 
 ## 7. Structure du projet
 src
-- publisher.py
-- subscriber.py
-- loggier_mariadb.py
-
+- publisher.py<br>
+- subscriber.py<br>
+- loggier_mariadb.py<br>
+<br>
 db
-- schema.sql
-- queries.sql
-
-requirements.txt
+- schema.sql<br>
+- queries.sql<br>
+<br>
+requirements.txt<br>
 
 
