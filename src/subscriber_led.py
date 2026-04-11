@@ -43,12 +43,13 @@ def publish_led_state(client: mqtt.Client) -> None:
         state = "mode nuit"
     elif led_clignotant:
         state = "clignoter"
-    if led.is_lit:
+    elif led.is_lit:
         state = "on"
     else:
         "off"
     client.publish(TOPIC_STATE, state, qos=1, retain=True)
     print(f"[STATE] {TOPIC_STATE} -> {state}")
+    return state
 
 
 def parse_command(payload_text: str) -> str | None:
@@ -112,6 +113,8 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
     Si le retour de parse_command est on, la LED s'allume. Si le retour est off, la LED s'éteint
 
     """
+    global led_on
+    global led_off
     global led_mode_nuit
     global led_clignotant
     payload_text = msg.payload.decode("utf-8", errors="replace")
@@ -147,7 +150,7 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         led.blink(0.5, 2)
         speak("DEL en mode nuit")
 
-    elif command == "blink":
+    elif command == "clignoter":
         led_on = False
         led_off = False
         led_mode_nuit = False
@@ -157,7 +160,7 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         
 
     elif command == "etat":
-        etat_led = publish_led_state(client)
+        publish_led_state(client)
         if led_on == True:
             speak("on")
         elif led_off == True:
