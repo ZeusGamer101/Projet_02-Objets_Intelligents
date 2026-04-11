@@ -1,4 +1,6 @@
 from __future__ import annotations
+import subprocess
+import speech_recognition as sr
 
 import json
 import time
@@ -26,6 +28,7 @@ TOPIC_VALUE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/sensors/cpu/value"
 
 # Statut "online/offline" pratique en IoT (peut �tre affich� aussi dans un dashboard)
 TOPIC_ONLINE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/status/online"
+topicsimple = "test/micro/message"
 
 # QoS:
 # - capteurs fr�quents -> QoS 0 (rapide, pas d'ack)
@@ -35,6 +38,41 @@ QOS_SENSOR = 0
 QOS_STATUS = 1
 PUBLISH_PERIOD_S = 2.0
 
+def parler(texte):
+        subprocess.run(["espeak-ng", "-v", "fr", "-s", "150", texte])
+
+def ecouter_micro():
+    r = sr.Recognizer()
+
+# R�glages de base test�s en pratique
+    r.dynamic_energy_threshold = False
+
+    r.energy_threshold = 1200
+    r.pause_threshold = 0.8
+
+    MIC_INDEX = 1 # Remplacez 1 par l'index r�el de votre micro
+    
+    with sr.Microphone(device_index=MIC_INDEX) as source:
+        print("Ne parlez pas pendant 2 secondes...")
+        r.adjust_for_ambient_noise(source, duration=2)
+        print("Seuil �nergie calibr� =", r.energy_threshold)
+        print("Parlez maintenant...")
+
+        try:
+            audio = r.listen(source, timeout=8, phrase_time_limit=6)
+        except sr.WaitTimeoutError:
+            print("Temps �coul� : aucune voix d�tect�e")
+            raise SystemExit
+
+    try:
+        texte = r.recognize_google(audio, language="fr-FR")
+        print("Texte reconnu :", texte)
+        parler(texte)
+        return texte
+    except sr.UnknownValueError:
+        print("Le syst�me n'a pas compris")
+    except sr.RequestError as e:
+        print("Erreur du service STT :", e)
 # ---------------------------------------------------------------------
 # 2) Lecture capteur (� brancher sur VOTRE code du cours pr�c�dent)
 # ---------------------------------------------------------------------
@@ -96,8 +134,12 @@ client.loop_start()
 # 5) Boucle principale (capteur -> publish)
 # ---------------------------------------------------------------------
 try:
-    client.publish(TOPIC_ONLINE,"online",qos=QOS_STATUS,retain=True)
+    message = ecouter_micro()
+    #client.publish(TOPIC_ONLINE,"online",qos=QOS_STATUS,retain=True)
+    client.publish(topicsimple,message,qos=QOS_STATUS,retain=True)
+    client.publish(topicsimple,"Bonjour",qos=QOS_STATUS,retain=True)
 
+    """
     while True:
         if not connected:
             print("[WAIT] en attente de connexion MQTT...")
@@ -109,23 +151,27 @@ try:
         payload = {
             "device_id": DEVICE,
             "sensor" : "CPU",
-            "value" : cpu_temp,
+            "value" : message,
             "unit" : "C",
             "ts" : datetime.now(timezone.utc).isoformat()
         }
 
         # 1) Message JSON (contrat "riche")
-        client.publish(TOPIC_JSON,json.dumps(payload),qos=QOS_SENSOR,retain=False)
+        #client.publish(TOPIC_JSON,json.dumps(payload),qos=QOS_SENSOR,retain=False)
+        client.publish(TOPIC_ONLINE,message,qos=QOS_STATUS,retain=False)
 
         # 2) Valeur simple (facile pour dashboards)
-        client.publish(TOPIC_VALUE,str(cpu_temp),qos=QOS_SENSOR,retain=False)
+        #client.publish(TOPIC_VALUE,str(cpu_temp),qos=QOS_SENSOR,retain=False)
 
-        print(f"[PUB] {TOPIC_JSON} -> {payload}")
+        #print(f"[PUB] {TOPIC_JSON} -> {payload}")
+        print(f"[PUB] {TOPIC_JSON} -> {message}")
         time.sleep(PUBLISH_PERIOD_S)
+    """
 
 except KeyboardInterrupt:
     print("\n[STOP] arr�t demand� (Ctrl+C)")
 finally:
-    client.publish(TOPIC_ONLINE,"offline",qos=QOS_STATUS,retain=True)
+    client.publish(topicsimple,message,qos=QOS_STATUS,retain=True)
     client.loop_stop()
     client.disconnect()
+

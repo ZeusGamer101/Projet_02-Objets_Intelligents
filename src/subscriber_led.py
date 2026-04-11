@@ -21,6 +21,7 @@ led = LED(LED_PIN_BCM)
 
 TOPIC_CMD = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/cmd"
 TOPIC_STATE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/state"
+topicsimple = "test/micro/message"
 
 QOS_CMD = 1
 
@@ -77,8 +78,8 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
     """
     print(f"[CONNECT] reason_code={reason_code}")
     if reason_code == 0:
-
-        client.subscribe(TOPIC_CMD, qos=QOS_CMD) # Quand la connection a été établie, le client s'abonne à TOPIC_CMD
+        client.subscribe(topicsimple, qos=QOS_CMD)
+        #client.subscribe(TOPIC_CMD, qos=QOS_CMD) # Quand la connection a été établie, le client s'abonne à TOPIC_CMD
         print(f"[SUB] {TOPIC_CMD} (qos={QOS_CMD})")
 
         publish_led_state(client) # Ici, on publie l'état de la LED au moment de la connection
