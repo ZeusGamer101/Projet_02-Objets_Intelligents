@@ -42,12 +42,12 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 
 ## 7. Structure du projet
 src<br>
--- publisher.py <br>
--- subscriber.py <br>
--- logger_mariadb.py <br>
+- publisher.py <br>
+- subscriber.py <br>
+- logger_mariadb.py <br>
 <br>
 db<br>
--- queries.sql <br>
--- schema.sql <br>
+- queries.sql <br>
+- schema.sql <br>
 
 
