@@ -24,7 +24,7 @@ if detecter_hotword():
             speak("j'active le clignotement")
 
         elif intent == "mode nuit":
-            speak("mode nuit activ�")
+            speak("mode nuit activé")
 
         elif intent == "etat":
             #speak("je vérifie l'état de la lampe")
