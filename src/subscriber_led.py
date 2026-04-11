@@ -22,6 +22,11 @@ led = LED(LED_PIN_BCM)
 TOPIC_CMD = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/cmd"
 TOPIC_STATE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/state"
 
+led_mode_nuit = False
+led_clignotant = False
+led_on = False
+led_off = False
+
 QOS_CMD = 1
 
 
@@ -33,7 +38,14 @@ def publish_led_state(client: mqtt.Client) -> None:
     Cette foction sert à publier l'état actuel de la LED sur TOPIC_STATE
     Étant donnée que retain = TRue, le broker va garder en mémoire le dernier état connu
     """
-    state = "on" if led.is_lit else "off"
+    if led_mode_nuit:
+        state = "mode nuit"
+    elif led_clignotant:
+        state = "clignoter"
+    if led.is_lit:
+        state = "on"
+    else:
+        "off"
     client.publish(TOPIC_STATE, state, qos=1, retain=True)
     print(f"[STATE] {TOPIC_STATE} -> {state}")
 
@@ -54,8 +66,10 @@ def parse_command(payload_text: str) -> str | None:
     # Normalisation des données
     if "state" in data and isinstance(data["state"], str):
         s = data["state"].strip().lower()
-        if s in ("on", "off"):
+        if s in ("on", "off", "clignoter", "mode nuit", "etat"):
             return s
+        else:
+            return None
     
     if "value" in data:
         v = data["value"]
@@ -63,6 +77,7 @@ def parse_command(payload_text: str) -> str | None:
             return "on"
         if v in (0, False, "0", "off", "OFF"):
             return "off"
+    return None
 
         
 #===================================
@@ -94,7 +109,8 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
     Si le retour de parse_command est on, la LED s'allume. Si le retour est off, la LED s'éteint
 
     """
-
+    global led_mode_nuit
+    global led_clignotant
     payload_text = msg.payload.decode("utf-8", errors="replace")
     print(f"[MSG] topic={msg.topic} qos={msg.qos} retain={msg.retain} payload={payload_text}")
 
@@ -104,9 +120,49 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         return
     
     if command == "on":
+        led_on = True
+        led_off = False
+        led_mode_nuit = False
+        led_clignotant = False
         led.on()
-    else:
+        speak("DEL allumée")
+
+    elif command == "off":
+        led_on = False
+        led_off = True
+        led_mode_nuit = False
+        led_clignotant = False
         led.off()
+        speak("DEL éteinte")
+
+    elif command == "mode nuit":
+        led_on = False
+        led_off = False
+        led_mode_nuit = True
+        led_clignotant = False
+        led.blink(0.5, 2)
+        speak("DEL en mode nuit")
+
+    elif command == "blink":
+        led_on = False
+        led_off = False
+        led_mode_nuit = False
+        led_clignotant = True
+        led.blink()
+        speak("DEL en mode clignotement")
+        
+
+    elif command == "etat":
+        etat_led = publish_led_state(client)
+        if led_on == True:
+            speak("on")
+        elif led_off == True:
+            speak("off")
+        elif led_mode_nuit == True:
+            speak("mode nuit")
+        elif led_clignotant == True:
+            speak("Mode clignotant")
+    
     publish_led_state(client)
 
 def on_disconnect(client, userdata, reason_code, properties=None):
