@@ -18,5 +18,5 @@ CREATE TABLE events (
     resultat VARCHAR(30) NOT NULL,
     ts_utc VARCHAR(30) NOT NULL,
     PRIMARY KEY (id),
-    INDEX idx_events_device_ts (device, ts_utc)
+    INDEX idx_events_ts (ts_utc)
 );
