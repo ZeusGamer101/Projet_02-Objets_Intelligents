@@ -46,7 +46,7 @@ def publish_led_state(client: mqtt.Client) -> None:
     elif led.is_lit:
         state = "on"
     else:
-        "off"
+        state = "off"
     client.publish(TOPIC_STATE, state, qos=1, retain=True)
     print(f"[STATE] {TOPIC_STATE} -> {state}")
     return state
