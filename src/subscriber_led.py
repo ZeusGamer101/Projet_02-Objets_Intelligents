@@ -3,6 +3,7 @@ from typing import Any
 import paho.mqtt.client as mqtt
 from gpiozero import LED
 from typing import Any, Optional
+from TTS import speak
 
 #===================================
 # Paramètres MQTT
@@ -91,6 +92,7 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
 
     """
     print(f"[CONNECT] reason_code={reason_code}")
+    speak("subscribeur est connecté au brokeur")
     if reason_code == 0:
 
         client.subscribe(TOPIC_CMD, qos=QOS_CMD) # Quand la connection a été établie, le client s'abonne à TOPIC_CMD
@@ -100,6 +102,7 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
     
     else:
         print("[ERROR] Connexion MQTT échouée.")
+        speak("Connexion MQTT échoué")
         
 def on_message(client, userdata, msg: mqtt.MQTTMessage):
     """
@@ -117,6 +120,7 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
     command = parse_command(payload_text)
     if command is None:
         print("[WARN] Commande invalide (JSON attendu). Ignorée.")
+        speak("Commande invalide (JSON attendu)")
         return
     
     if command == "on":
@@ -172,6 +176,7 @@ def on_disconnect(client, userdata, reason_code, properties=None):
     """
     print(f"[DISCONNECT] reason_code={reason_code}")
     led.off()
+    speak("Le subscribeur s'est déconnecté du brokeur")
 
 #===================================
 # Démarrage du client MQTT

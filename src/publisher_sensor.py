@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timezone
 from gpiozero import CPUTemperature
 import random
+from TTS import speak
 
 import paho.mqtt.client as mqtt
 
@@ -55,12 +56,14 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
     global connected
     print("[CONNECT] reason_code={reason_code}")
     connected = (reason_code == 0)
+    speak("le publisheur est connecté au brokeur")
 
 
 def on_disconnect(client,userdata,reason_code,properties=None):
     global connected
     print(f"[DISCONNECT] reason_code={reason_code}")
     connected = False
+    speak("le publisheur est décconnecté du brokeur")
 
 # ---------------------------------------------------------------------
 # 4) Cr�ation du client + LWT + connexion
@@ -124,8 +127,11 @@ try:
         time.sleep(PUBLISH_PERIOD_S)
 
 except KeyboardInterrupt:
-    print("\n[STOP] arr�t demand� (Ctrl+C)")
+    print("\n[STOP] arrêt demandé (Ctrl+C)")
+    speak("arrêt utilisateur demandé")
+    
 finally:
     client.publish(TOPIC_ONLINE,"offline",qos=QOS_STATUS,retain=True)
     client.loop_stop()
     client.disconnect()
+
