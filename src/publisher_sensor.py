@@ -3,9 +3,6 @@ from __future__ import annotations
 import json
 import time
 from datetime import datetime, timezone
-from gpiozero import CPUTemperature
-import random
-from TTS import speak
 
 import paho.mqtt.client as mqtt
 
@@ -22,8 +19,7 @@ DEVICE = "piBM"
 
 CLIENT_ID = "b3-pub-piBM-led"
 
-TOPIC_JSON = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/sensors/cpu"
-TOPIC_VALUE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/sensors/cpu/value"
+TOPIC_CMD = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/cmd"
 
 # Statut "online/offline" pratique en IoT (peut �tre affich� aussi dans un dashboard)
 TOPIC_ONLINE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/status/online"
@@ -39,31 +35,41 @@ PUBLISH_PERIOD_S = 2.0
 # ---------------------------------------------------------------------
 # 2) Lecture capteur (� brancher sur VOTRE code du cours pr�c�dent)
 # ---------------------------------------------------------------------
+def publish_commande(state):
+    client = mqtt.Client()
+    client.connect(BROKER_HOST, BROKER_PORT, 60)
+    client.loop_start()
 
-def read_temperature_cpu() -> float:
-    cpu = CPUTemperature()
-    return cpu.temperature
+    payload = {"state": state}
 
+    client.publish(TOPIC_CMD, json.dumps(payload), qos=1)
+    print(f"[MQTT] envoyé : {payload}")
 
+    time.sleep(1)
+
+    client.loop_stop()
+    client.disconnect()
 
 # ---------------------------------------------------------------------
 # 3) Callbacks MQTT (�v�nementiel)
 # ---------------------------------------------------------------------
+def connecter_mqtt():
+    client.connect(BROKER_HOST, BROKER_PORT, keepalive=KEEPALIVE_S)
+    client.loop_start()
 
 connected = False # drapeau simple pour savoir si on est connect�
 
 def on_connect(client, userdata, flags, reason_code, properties=None):
     global connected
-    print("[CONNECT] reason_code={reason_code}")
+    print(f"[CONNECT] reason_code={reason_code}")
     connected = (reason_code == 0)
-    speak("le publisheur est connecté au brokeur")
+
 
 
 def on_disconnect(client,userdata,reason_code,properties=None):
     global connected
     print(f"[DISCONNECT] reason_code={reason_code}")
     connected = False
-    speak("le publisheur est décconnecté du brokeur")
 
 # ---------------------------------------------------------------------
 # 4) Cr�ation du client + LWT + connexion
@@ -91,47 +97,4 @@ client.will_set(
 # (On garde �a simple; on le renforcera dans les prochaines s�ances)
 client.reconnect_delay_set(min_delay=1,max_delay=30)
 
-# Connexion non bloquante + thread r�seau:
-client.connect_async(BROKER_HOST,BROKER_PORT,keepalive=KEEPALIVE_S)
-client.loop_start()
-
-# ---------------------------------------------------------------------
-# 5) Boucle principale (capteur -> publish)
-# ---------------------------------------------------------------------
-try:
-    client.publish(TOPIC_ONLINE,"online",qos=QOS_STATUS,retain=True)
-
-    while True:
-        if not connected:
-            print("[WAIT] en attente de connexion MQTT...")
-            time.sleep(1.0)
-            continue
-    
-        cpu_temp = read_temperature_cpu()
-
-        payload = {
-            "device_id": DEVICE,
-            "sensor" : "CPU",
-            "value" : cpu_temp,
-            "unit" : "C",
-            "ts" : datetime.now(timezone.utc).isoformat()
-        }
-
-        # 1) Message JSON (contrat "riche")
-        client.publish(TOPIC_JSON,json.dumps(payload),qos=QOS_SENSOR,retain=False)
-
-        # 2) Valeur simple (facile pour dashboards)
-        client.publish(TOPIC_VALUE,str(cpu_temp),qos=QOS_SENSOR,retain=False)
-
-        print(f"[PUB] {TOPIC_JSON} -> {payload}")
-        time.sleep(PUBLISH_PERIOD_S)
-
-except KeyboardInterrupt:
-    print("\n[STOP] arrêt demandé (Ctrl+C)")
-    speak("arrêt utilisateur demandé")
-    
-finally:
-    client.publish(TOPIC_ONLINE,"offline",qos=QOS_STATUS,retain=True)
-    client.loop_stop()
-    client.disconnect()
-
+publish_commande("mode nuit")
