@@ -132,7 +132,7 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         led_mode_nuit = False
         led_clignotant = False
         led.on()
-        speak("DEL allumée")
+        speak("Lampe allumée")
 
     elif command == "off":
         led_on = False
@@ -140,7 +140,7 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         led_mode_nuit = False
         led_clignotant = False
         led.off()
-        speak("DEL éteinte")
+        speak("Lampe éteinte")
 
     elif command == "mode nuit":
         led_on = False
@@ -148,7 +148,7 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         led_mode_nuit = True
         led_clignotant = False
         led.blink(0.5, 2)
-        speak("DEL en mode nuit")
+        speak("Lampe en mode nuit")
 
     elif command == "clignoter":
         led_on = False
@@ -156,19 +156,19 @@ def on_message(client, userdata, msg: mqtt.MQTTMessage):
         led_mode_nuit = False
         led_clignotant = True
         led.blink()
-        speak("DEL en mode clignotement")
+        speak("Lampe en mode clignotement")
         
 
     elif command == "etat":
         publish_led_state(client)
         if led_on == True:
-            speak("on")
+            speak("La lampe est allumée")
         elif led_off == True:
-            speak("off")
+            speak("La lampe est fermé")
         elif led_mode_nuit == True:
-            speak("mode nuit")
+            speak("La lampe est en mode nuit")
         elif led_clignotant == True:
-            speak("Mode clignotant")
+            speak("La lampe clignote clignotant")
     
     publish_led_state(client)
 

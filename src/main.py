@@ -25,5 +25,9 @@ if detecter_hotword():
 
         elif intent == "mode nuit":
             speak("mode nuit activ�")
+
+        elif intent == "etat":
+            #speak("je vérifie l'état de la lampe")
+            pass
     else:
         speak("commande non reconnue")
