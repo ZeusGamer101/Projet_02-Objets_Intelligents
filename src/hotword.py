@@ -36,5 +36,5 @@ def detecter_hotword():
     except sr.RequestError as e:
         print("Erreur du service STT :", e)
         return False
-    
-detecter_hotword()
+#test pour la voix 
+#detecter_hotword()
