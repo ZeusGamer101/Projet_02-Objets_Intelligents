@@ -46,70 +46,56 @@ def db_connect() -> pymysql.connections.Connection:
 # Connexion DB globale (simple)
 db = db_connect()
 
+
 # -----------------------------
-# 3) Fonctions utilitaires
+# 3) INSERT en BD (SQL param�tr�)
 # -----------------------------
-def extract_device(topic:str) -> str:
-    parts = topic.split("/")
-    return parts[4] if len(parts) >= 5 else "unknown"
 
-def is_telemetry(topic:str) -> bool:
-    if "/sensors/" not in topic:
-        return False
-    if topic.endswith("/value"):
-        return False
-    return True
-
-def classify_kind(topic:str) -> str:
-    if "/cmd/" in topic:
-        return "cmd"
-    if "/state/" in topic:
-        return "state"
-    if "/status" in topic:
-        return "status"
-    return "other"
-
-def try_parse_json(payload_text: str) -> Optional[dict[str,Any]]:
+def parse_JSON(payload_text: str):
     try:
         obj = json.loads(payload_text)
-        return obj if isinstance(obj,dict) else None
+        return obj if isinstance(obj, dict) else None
     except json.JSONDecodeError:
         return None
 
-# -----------------------------
-# 4) INSERT en BD (SQL param�tr�)
-# -----------------------------
-def insert_telemetry(ts_utc: str,device:str,topic:str,payload_text:str) -> None:
-    obj = try_parse_json(payload_text)
-    value = None
-    unit = None
-
-    if obj is not None:
-        if "value" in obj:
-            try:
-                value = float(obj["value"])
-            except(TypeError,ValueError):
-                value = None
-        if "unit" in obj and isinstance(obj["unit"],str):
-            unit = obj["unit"][:16]
-
+def insert_event(payload_text, ts_utc) -> None:
     sql = """
-        INSERT INTO telemetry (device, topic, value, unit, ts_utc)
-        VALUES (%s, %s, %s, %s, %s)
-    """
-    with db.cursor() as cur:
-        cur.execute(sql,(device,topic,value,unit,ts_utc))
-
-def insert_event(device:str,topic:str, payload_text: str, ts_utc: str) -> None:
-    sql = """
-        INSERT INTO events (device, topic, payload,ts_utc)
+        INSERT INTO events (commande_texte, intention_detectee, resultat,ts_utc)
         VALUES (%s, %s, %s, %s)
     """
+    commande_texte = None
+    intention_detectee = None
+    resultat = None
+
+    obj = parse_JSON(payload_text)
+
+    if obj is not None:
+        if "Texte reconnu" in obj:
+            try:
+                commande_texte = obj["Texte reconnu"]
+            except (TypeError, ValueError):
+                commande_texte = None
+        if "Intention" in obj:
+            try:
+                intention_detectee = obj["Intention"]
+            except (TypeError, ValueError):
+                intention_detectee = None
+        if "[MQTT] envoyé" in obj:
+            try:
+                resultat = obj["[MQTT] envoyé"]
+            except (TypeError, ValueError):
+                resultat = None
+
+    else:
+        print("JSON invalide")
+        return
+        
+
     with db.cursor() as cur:
-        cur.execute(sql,(device,topic,payload_text,ts_utc))
+        cur.execute(sql,(commande_texte,intention_detectee, resultat,ts_utc))
 
 # -----------------------------
-# 5) Callbacks MQTT
+# 4) Callbacks MQTT
 # -----------------------------
 def on_connect(client,_userdata,_flags,reason_code,properties=None):
     print(f"[CONNECT] reason_code={reason_code}")
@@ -121,20 +107,13 @@ def on_connect(client,_userdata,_flags,reason_code,properties=None):
 
 def on_message(_client,_userdate,msg: mqtt.MQTTMessage):
     topic = msg.topic
-    payload_text= msg.payload.decode("utf-8", errors="replace")
-    if topic.endswith("/value"):
-        print(f"[SKIP] Ignored value topic: {topic}")
-        return
-    device = extract_device(topic)
-    ts = utc_now_naive().isoformat() + "Z"
+    payload_text = msg.payload.decode("utf-8", errors="replace")
+    ts = utc_now_naive()
 
     try:
-        if is_telemetry(topic):
-            insert_telemetry(ts,device,topic,payload_text)
-            print(f"[DB] telemetry <- {topic}")
-        else:
-            insert_event(device,topic,payload_text,ts)
-            print(f"[DB] event <- {topic}")
+
+        insert_event(payload_text, ts)
+        print(f"[DB] event <- {topic}")
 
     except pymysql.MySQLError as e:
         print(f"[DB-ERROR] {e} -> reconnexion")
@@ -150,10 +129,8 @@ def on_disconnect(_client,_userdate,reason_code,propreties=None):
     print(f"[DISCONNECT] reason_code={reason_code}")
 
 
-
-
 # -----------------------------
-# 6) D�marrage
+# 5) D�marrage
 # -----------------------------
 client = mqtt.Client(client_id=MQTT_CLIENT_ID,protocol=mqtt.MQTTv311)
 client.on_connect = on_connect
