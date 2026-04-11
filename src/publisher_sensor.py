@@ -97,4 +97,5 @@ client.will_set(
 # (On garde �a simple; on le renforcera dans les prochaines s�ances)
 client.reconnect_delay_set(min_delay=1,max_delay=30)
 
-publish_commande("mode nuit")
+#On test la commande de publier l'etat ici
+#publish_commande("off")
