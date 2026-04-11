@@ -31,3 +31,14 @@ CREATE TABLE events (
     PRIMARY KEY (id),
     INDEX idx_events_device_ts (device, ts_utc)
 );
+
+-- Table pour les évènemements (TP2)
+CREATE TABLE events (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    commande_texte VARCHAR(32) NOT NULL,
+    intention_detectee VARCHAR(32) NOT NULL,
+    resultat VARCHAR(30) NOT NULL,
+    ts_utc VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id),
+    INDEX idx_events_device_ts (device, ts_utc)
+);

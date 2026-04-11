@@ -48,7 +48,7 @@ db = db_connect()
 
 
 # -----------------------------
-# 4) INSERT en BD (SQL param�tr�)
+# 3) INSERT en BD (SQL param�tr�)
 # -----------------------------
 
 def parse_JSON(payload_text: str):
@@ -63,6 +63,9 @@ def insert_event(payload_text, ts_utc) -> None:
         INSERT INTO events (commande_texte, intention_detectee, resultat,ts_utc)
         VALUES (%s, %s, %s, %s)
     """
+    commande_texte = None
+    intention_detectee = None
+    resultat = None
 
     obj = parse_JSON(payload_text)
 
@@ -92,7 +95,7 @@ def insert_event(payload_text, ts_utc) -> None:
         cur.execute(sql,(commande_texte,intention_detectee, resultat,ts_utc))
 
 # -----------------------------
-# 5) Callbacks MQTT
+# 4) Callbacks MQTT
 # -----------------------------
 def on_connect(client,_userdata,_flags,reason_code,properties=None):
     print(f"[CONNECT] reason_code={reason_code}")
@@ -127,7 +130,7 @@ def on_disconnect(_client,_userdate,reason_code,propreties=None):
 
 
 # -----------------------------
-# 6) D�marrage
+# 5) D�marrage
 # -----------------------------
 client = mqtt.Client(client_id=MQTT_CLIENT_ID,protocol=mqtt.MQTTv311)
 client.on_connect = on_connect
