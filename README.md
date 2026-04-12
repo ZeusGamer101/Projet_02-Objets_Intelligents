@@ -23,10 +23,10 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 **Étape 4:** Vérifier le port MQTT avec la ligne de commande sudo ss -lntp | grep 1883 <br>
 **Étape 5:** Importer les fichiers à partir de GitHub et les mettre dans un dossier <br>
 **Étape 6:** Créer un environnement virtuel (venv) dans le dossier où se trouvent les fichiers en insérant cette ligne de commande dans un terminal python: *python3 -m venv .venv* <br>
-**Éatpe 7**: Activer le venv en insérant cette commande dans le même terminal: *source .venv/bin/activate*
-**Étape 7:** Dans un terminal python, écrire la commande pip install -r requirement.txt <br>
-**Étape 8:** À l'aide des commandes dans le fichier schéma.sql, créer la table events
-**Étape 9:** Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
+**Éatpe 7**: Activer le venv en insérant cette commande dans le même terminal: *source .venv/bin/activate*<br>
+**Étape 8:** Dans un terminal python, écrire la commande pip install -r requirement.txt <br>
+**Étape 9:** À l'aide des commandes dans le fichier schéma.sql, créer la table events<br>
+**Étape 10:** Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
 
 ## 5. Procédure de lancement
 **Étape 1**: Dans un premier terminal, lancer le subscriber en insérant la ligne de commande: *python src/subscriber_led.py*  <br>
