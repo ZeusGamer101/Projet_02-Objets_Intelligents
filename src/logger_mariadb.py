@@ -62,7 +62,7 @@ def parse_JSON(payload_text: str):
 
 def insert_event(payload_text, ts_utc) -> None:
     sql = """
-        INSERT INTO eventsTP (commande_texte, intention_detectee, resultat,ts_utc)
+        INSERT INTO events (commande_texte, intention_detectee, resultat,ts_utc)
         VALUES (%s, %s, %s, %s)
     """
     commande_texte = None
@@ -70,6 +70,8 @@ def insert_event(payload_text, ts_utc) -> None:
     resultat = None
 
     obj = parse_JSON(payload_text)
+
+    print(f"Objet {obj}")
 
     if obj is not None:
         if "Texte reconnu" in obj:
