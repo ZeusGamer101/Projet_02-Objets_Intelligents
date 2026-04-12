@@ -16,8 +16,10 @@ MQTT_BROKER_HOST = "localhost"
 MQTT_BROKER_PORT = 1883
 MQTT_KEEPALIVE = 60
 
-MQTT_PREFIX = "ahuntsic/aec-iot/b3/equipe_blondel_martin/piBM"
-MQTT_TOPIC_FILTER = f"{MQTT_PREFIX}/#"
+TEAM = "equipe_blondel_martin"
+DEVICE = "piBM"
+
+TOPIC_STATE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/state"
 
 MQTT_CLIENT_ID = "b3-logger-demo-pi01"
 
@@ -60,7 +62,7 @@ def parse_JSON(payload_text: str):
 
 def insert_event(payload_text, ts_utc) -> None:
     sql = """
-        INSERT INTO events (commande_texte, intention_detectee, resultat,ts_utc)
+        INSERT INTO eventsTP (commande_texte, intention_detectee, resultat,ts_utc)
         VALUES (%s, %s, %s, %s)
     """
     commande_texte = None
@@ -86,9 +88,6 @@ def insert_event(payload_text, ts_utc) -> None:
             except (TypeError, ValueError):
                 resultat = None
 
-    else:
-        print("JSON invalide")
-        return
         
 
     with db.cursor() as cur:
@@ -100,8 +99,8 @@ def insert_event(payload_text, ts_utc) -> None:
 def on_connect(client,_userdata,_flags,reason_code,properties=None):
     print(f"[CONNECT] reason_code={reason_code}")
     if reason_code == 0:
-        client.subscribe(MQTT_TOPIC_FILTER,qos=0)
-        print(f"[SUB] {MQTT_TOPIC_FILTER}")
+        client.subscribe(TOPIC_STATE,qos=0)
+        print(f"[SUB] {TOPIC_STATE}")
     else:
         print("[ERROR] Connexion MQTT echouee.")
 

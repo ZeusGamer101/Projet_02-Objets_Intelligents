@@ -24,6 +24,8 @@ TOPIC_CMD = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/cmd"
 # Statut "online/offline" pratique en IoT (peut �tre affich� aussi dans un dashboard)
 TOPIC_ONLINE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/status/online"
 
+TOPIC_STATE = f"ahuntsic/aec-iot/b3/{TEAM}/{DEVICE}/actuators/led/state"
+
 # QoS:
 # - capteurs fr�quents -> QoS 0 (rapide, pas d'ack)
 # - �tats/commandes -> souvent QoS 1 (plus fiable)
@@ -35,20 +37,24 @@ PUBLISH_PERIOD_S = 2.0
 # ---------------------------------------------------------------------
 # 2) Lecture capteur (� brancher sur VOTRE code du cours pr�c�dent)
 # ---------------------------------------------------------------------
-def publish_commande(state):
+def publish_commande(texte, intention, state):
     client = mqtt.Client()
     client.connect(BROKER_HOST, BROKER_PORT, 60)
     client.loop_start()
 
     payload = {"state": state}
+    payload_db = {"Texte reconnu":texte, "Intention":intention,"[MQTT] envoyé":state}
 
     client.publish(TOPIC_CMD, json.dumps(payload), qos=1)
     print(f"[MQTT] envoyé : {payload}")
+
+    client.publish(TOPIC_STATE, json.dumps(payload_db), qos=1)
 
     time.sleep(1)
 
     client.loop_stop()
     client.disconnect()
+
 
 # ---------------------------------------------------------------------
 # 3) Callbacks MQTT (�v�nementiel)
