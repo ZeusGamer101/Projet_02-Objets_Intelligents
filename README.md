@@ -25,22 +25,43 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 **Étape 5:** Importer les fichiers à partir de GitHub et les mettre dans un dossier <br>
 **Étape 6:** Créer un venv dans le dossier où se trouvent les fichiers <br>
 **Étape 7:** Dans un terminal python, écrire la commande pip install -r requirement.txt <br>
+**Étape 8:** À l'aide du schéma.sql, créer la table events
+
 **Étape 8**: Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
 
 ## 5. Procédure de lancement
 **Étape 1**: Dans un premier terminal, lancer le subscriber en insérant la ligne de commande: *python src/subscriber_led.py*  <br>
 **Étape 2**: Dans un deuxième terminal, lancer le logger en insérant la ligne de commande: *python src/logger_mariadb.py* <br>
 **Étape 3**: Dans un troisième terminal, lancer le main avec en insérant la ligne de commande: *python src/main_mariadb.py* <br>
-**Étape 4**: Après que le systèm soit calibré, dire le hotword pour activer le système<br>
+**Étape 4**: Après que le systèm soit calibré, dire le hotword (assistant) pour activer le système<br>
 
 ## 6. Commandes supportées
 Voici des exemples dec ommandes supportées et les actions qu'elles produistent sur le système: <br>
-- **allume la lampe**: la DEL s'allume <br>
-- **éteint la lampe**: la DEL s'éteint <br>
-- **fais clignoter la lampe**: la DEL clignote <br>
-- **donne-moi l'état**: le système vocal dit quel est l'état actuel de la lampe <br>
-- **active le mode nuit**: la DEL clignote lentement <br>
-
+### Allumage LED:
+- Allume la (lampe/LED)<br>
+- Allumer la (lampe/LED)<br>
+- Met en marche la (lampe/LED)<br>
+<br>
+### Extinction LED:
+- Éteint la (lampe/LED)<br>
+- Ferme la (lampe/LED)<br>
+- Arrête la (lampe/LED)<br>
+- Stop la (lampe/LED)<br>
+<br>
+### Clignotement LED:
+- Clignote la lampe (LED)<br>
+- Clignoter la lampe (LED)<br>
+- Fait clignoter la lampe (LED)<br>
+<br>
+### Mode nuit:
+- Active le mode (nuit/echo/silence)<br>
+- met le mode (nuit/echo/silence)<br>
+- mode (nuit/echo/silence)<br>
+<br>
+### Donner l'état:
+- Donne moi l'état<br>
+- Quel est l'état<br>
+  
 ## 7. Structure du projet
 - src<br>
   - publisher_sensor.py <br>
