@@ -44,4 +44,4 @@ def ecouter_commande():
         print("Erreur du service STT :", e)
         return None
 
-ecouter_commande()
+#ecouter_commande()
