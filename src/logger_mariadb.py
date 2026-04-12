@@ -71,24 +71,26 @@ def insert_event(payload_text, ts_utc) -> None:
 
     obj = parse_JSON(payload_text)
 
-    print(f"Objet {obj}")
-
     if obj is not None:
         if "Texte reconnu" in obj:
             try:
                 commande_texte = obj["Texte reconnu"]
             except (TypeError, ValueError):
-                commande_texte = None
+                commande_texte = "Aucune commande detectée"
         if "Intention" in obj:
             try:
                 intention_detectee = obj["Intention"]
             except (TypeError, ValueError):
-                intention_detectee = None
+                intention_detectee = "Aucune intention detectée"
         if "[MQTT] envoyé" in obj:
             try:
                 resultat = obj["[MQTT] envoyé"]
             except (TypeError, ValueError):
-                resultat = None
+                resultat = "État inconnu"
+
+    else:
+        print("[ERROR] JSON invalide")
+        return
 
         
 

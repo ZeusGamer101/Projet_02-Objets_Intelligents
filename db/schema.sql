@@ -10,13 +10,13 @@ FLUSH PRIVILEGES;
 -- Commande pour se postionner sur la bonne DB
 USE iot_p1;
 
--- Table pour les évènemements (TP2)
+-- Table pour les évènemements
 CREATE TABLE events (
-    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    commande_texte VARCHAR(32) NOT NULL,
-    intention_detectee VARCHAR(32) NOT NULL,
-    resultat VARCHAR(30) NOT NULL,
-    ts_utc VARCHAR(30) NOT NULL,
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    commande_texte VARCHAR(32),
+    intention_detectee VARCHAR(32),
+    resultat VARCHAR(32),
+    ts_utc VARCHAR(32) NOT NULL,
     PRIMARY KEY (id),
     INDEX idx_events_ts (ts_utc)
 );
