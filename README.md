@@ -7,7 +7,6 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 - Raspberry PI <br>
 - DEL rouge <br>
 - Resistance de 220 ohms <br>
-- Celullaire avec MQTT Dash ou une autre application d'objets intelligents <br>
 - Écouteurs USB avec microphone <br>
 
 ## 3. Dépendances
@@ -48,9 +47,9 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 - Stop la (lampe/LED)<br>
 
 ### Clignotement LED:
-- Clignote la lampe (LED)<br>
-- Clignoter la lampe (LED)<br>
-- Fait clignoter la lampe (LED)<br>
+- Clignote la lampe (lampe/LED)<br>
+- Clignoter la lampe (lampe/LED)<br>
+- Fait clignoter la lampe(lampe/LED)<br>
 
 ### Mode nuit:
 - Active le mode (nuit/echo/silence)<br>
