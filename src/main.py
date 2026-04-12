@@ -15,7 +15,7 @@ while running:
         print("Intention :", intent)
 
         if intent != "inconnue":
-            publish_commande(commande,intent,intent)
+            publish_commande(commande, intent, intent)
             if intent == "on":
                 speak("j'allume la lampe")
 
