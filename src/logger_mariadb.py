@@ -71,7 +71,12 @@ def insert_event(payload_text, ts_utc) -> None:
 
     obj = parse_JSON(payload_text)
 
-    if obj is not None:
+    if obj is None:
+        commande_texte = payload_text
+        intention_detectee = "etat"
+        resultat=payload_text
+
+    else:
         if "Texte reconnu" in obj:
             try:
                 commande_texte = obj["Texte reconnu"]
@@ -87,11 +92,6 @@ def insert_event(payload_text, ts_utc) -> None:
                 resultat = obj["[MQTT] envoyé"]
             except (TypeError, ValueError):
                 resultat = "État inconnu"
-
-    else:
-        print("[ERROR] JSON invalide")
-        return
-
         
 
     with db.cursor() as cur:
