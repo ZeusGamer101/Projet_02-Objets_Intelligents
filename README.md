@@ -27,10 +27,11 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 **Étape 7:** Dans un terminal python, écrire la commande pip install -r requirement.txt <br>
 **Étape 8**: Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
 
-## 5. Procédures de lancement
-**Étape 1**: Lancer le subscriber <br>
-**Étape 2**: Lancer le publisher <br>
-**Étape 3**: Lancer le logger <br>
+## 5. Procédure de lancement
+**Étape 1**: Dans un premier terminal, lancer le subscriber en insérant la ligne de commande: *python src/subscriber_led.py*  <br>
+**Étape 2**: Dans un deuxième terminal, lancer le logger en insérant la ligne de commande: *python src/logger_mariadb.py* <br>
+**Étape 3**: Dans un troisième terminal, lancer le main avec en insérant la ligne de commande: *python src/logger_mariadb.py* <br>
+**Étape 4**: Après que le systèm soit calibré, dire le hotword pour activer le système<br>
 
 ## 6. Commandes supportées
 Voici des exemples dec ommandes supportées et les actions qu'elles produistent sur le système: <br>
@@ -42,9 +43,15 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 
 ## 7. Structure du projet
 src<br>
-- publisher.py <br>
-- subscriber.py <br>
+- publisher_sensor.py <br>
+- subscriber_led.py <br>
 - logger_mariadb.py <br>
+- parser_module.py <br>
+- stt_module.py <br>
+- TTS.py <br>
+- hotword.py <br><br
+- main.py
+
 <br>
 db<br>
 - queries.sql <br>
