@@ -25,9 +25,8 @@ Ce projet d’internet des objets consiste à créer un système de lampe intell
 **Étape 5:** Importer les fichiers à partir de GitHub et les mettre dans un dossier <br>
 **Étape 6:** Créer un venv dans le dossier où se trouvent les fichiers <br>
 **Étape 7:** Dans un terminal python, écrire la commande pip install -r requirement.txt <br>
-**Étape 8:** À l'aide du schéma.sql, créer la table events
-
-**Étape 8**: Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
+**Étape 8:** À l'aide des commandes dans le fichier schéma.sql, créer la table events
+**Étape 9:** Trouver le bon index pour les écouteurs et le stocker dans la variable MIC_INDEX (publisher.py) <br>
 
 ## 5. Procédure de lancement
 **Étape 1**: Dans un premier terminal, lancer le subscriber en insérant la ligne de commande: *python src/subscriber_led.py*  <br>
