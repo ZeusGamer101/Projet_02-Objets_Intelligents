@@ -49,12 +49,11 @@ src<br>
 - parser_module.py <br>
 - stt_module.py <br>
 - TTS.py <br>
-- hotword.py <br><br
+- hotword.py <br>
 - main.py
-
 <br>
 db<br>
-- queries.sql <br>
-- schema.sql <br>
+ - queries.sql <br>
+ - schema.sql <br>
 
 
