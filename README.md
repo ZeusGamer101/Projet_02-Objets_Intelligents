@@ -42,18 +42,17 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 - **active le mode nuit**: la DEL clignote lentement <br>
 
 ## 7. Structure du projet
-src<br>
-- publisher_sensor.py <br>
-- subscriber_led.py <br>
-- logger_mariadb.py <br>
-- parser_module.py <br>
-- stt_module.py <br>
-- TTS.py <br>
-- hotword.py <br>
-- main.py
-<br>
-db<br>
- - queries.sql <br>
- - schema.sql <br>
+- src<br>
+  - publisher_sensor.py <br>
+  - subscriber_led.py <br>
+  - logger_mariadb.py <br>
+  - parser_module.py <br>
+  - stt_module.py <br>
+  - TTS.py <br>
+  - hotword.py <br>
+  - main.py
+- db<br>
+  - queries.sql <br>
+  - schema.sql <br>
 
 
