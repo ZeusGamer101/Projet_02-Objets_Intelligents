@@ -62,7 +62,7 @@ def parse_JSON(payload_text: str):
 
 def insert_event(payload_text, ts_utc) -> None:
     sql = """
-        INSERT INTO events (commande_texte, intention_detectee, resultat,ts_utc)
+        INSERT INTO eventsTP (commande_texte, intention_detectee, resultat,ts_utc)
         VALUES (%s, %s, %s, %s)
     """
     commande_texte = None
@@ -88,9 +88,6 @@ def insert_event(payload_text, ts_utc) -> None:
             except (TypeError, ValueError):
                 resultat = None
 
-    else:
-        print("JSON invalide")
-        return
         
 
     with db.cursor() as cur:
