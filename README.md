@@ -53,8 +53,8 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 
 ### Mode nuit:
 - Active le mode (nuit/echo/silence)<br>
-- met le mode (nuit/echo/silence)<br>
-- mode (nuit/echo/silence)<br>
+- Met le mode (nuit/echo/silence)<br>
+- Mode (nuit/echo/silence)<br>
 
 ### Donner l'état:
 - Donne moi l'état<br>
