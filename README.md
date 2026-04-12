@@ -41,23 +41,23 @@ Voici des exemples dec ommandes supportées et les actions qu'elles produistent 
 - Allume la (lampe/LED)<br>
 - Allumer la (lampe/LED)<br>
 - Met en marche la (lampe/LED)<br>
-<br>
+
 ### Extinction LED:
 - Éteint la (lampe/LED)<br>
 - Ferme la (lampe/LED)<br>
 - Arrête la (lampe/LED)<br>
 - Stop la (lampe/LED)<br>
-<br>
+
 ### Clignotement LED:
 - Clignote la lampe (LED)<br>
 - Clignoter la lampe (LED)<br>
 - Fait clignoter la lampe (LED)<br>
-<br>
+
 ### Mode nuit:
 - Active le mode (nuit/echo/silence)<br>
 - met le mode (nuit/echo/silence)<br>
 - mode (nuit/echo/silence)<br>
-<br>
+
 ### Donner l'état:
 - Donne moi l'état<br>
 - Quel est l'état<br>
