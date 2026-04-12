@@ -1,5 +1,5 @@
 from parser_module import detecter_intention, normaliser_texte
-from publisher_sensor import client, publish_commande, connecter_mqtt, JSON_pour_DB
+from publisher_sensor import client, publish_commande, connecter_mqtt
 from hotword import detecter_hotword
 from stt_module import ecouter_commande
 from TTS import speak
