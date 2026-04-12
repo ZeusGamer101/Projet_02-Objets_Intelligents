@@ -1,5 +1,5 @@
 from parser_module import detecter_intention, normaliser_texte
-from publisher_sensor import client, publish_commande, connecter_mqtt
+from publisher_sensor import client, publish_commande, connecter_mqtt, JSON_pour_DB
 from hotword import detecter_hotword
 from stt_module import ecouter_commande
 from TTS import speak
@@ -15,7 +15,7 @@ while running:
         print("Intention :", intent)
 
         if intent != "inconnue":
-            publish_commande(commande,intent,intent)
+            publish_commande(commande, intent, intent)
             if intent == "on":
                 speak("j'allume la lampe")
 
